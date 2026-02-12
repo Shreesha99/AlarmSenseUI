@@ -1,0 +1,5 @@
+{
+  "name": "Siemens AlarmSense SCADA",
+  "description": "An enterprise-grade SCADA alarm management dashboard featuring site-specific turbine analysis, root cause tracking, and historical alarm grids.",
+  "requestFramePermissions": []
+}

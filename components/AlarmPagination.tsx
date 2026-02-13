@@ -1,5 +1,6 @@
 import React from "react";
-import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import CustomDropdown from "./CustomDropdown";
 
 interface Props {
   resultsLength: number;
@@ -56,20 +57,15 @@ const AlarmPagination: React.FC<Props> = ({
             Rows
           </span>
 
-          <div className="relative">
-            <select
-              value={pageSize}
-              onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="appearance-none bg-gray-50 border border-gray-200 rounded-md px-3 py-1.5 pr-8 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#2d1653]/20 focus:border-[#2d1653]"
-            >
-              {pageSizeOptions.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-
-            <ChevronDown className="w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+          <div className="w-24">
+            <CustomDropdown
+              value={String(pageSize)}
+              options={pageSizeOptions.map((opt) => ({
+                label: String(opt),
+                value: String(opt),
+              }))}
+              onChange={(val) => onPageSizeChange(Number(val))}
+            />
           </div>
         </div>
 

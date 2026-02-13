@@ -69,6 +69,7 @@ const AlarmSearchForm: React.FC<Props> = ({
             options={turbineOptions}
             placeholder="Select Asset"
             disabled={!filter.siteId}
+            disabledTooltip="Please select a site first"
             error={!!errors.turbineId}
             onChange={(val) => onChange("turbineId", val)}
           />

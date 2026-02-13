@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { RootCauseResult } from "@/types";
-import { Filter } from "lucide-react";
+import { Filter, X } from "lucide-react";
 import CustomDateTimePicker from "@/components/CustomDateTimePicker";
 import CustomDropdown from "@/components/CustomDropdown";
 import CustomButton from "@/components/CustomButton";
@@ -21,6 +21,13 @@ const AlarmFilterPopover: React.FC<Props> = ({ data, onFiltered }) => {
 
   const [minDuration, setMinDuration] = useState("");
   const [maxDuration, setMaxDuration] = useState("");
+  const isFilterActive =
+    search.trim() !== "" ||
+    priority !== "ALL" ||
+    fromDate !== "" ||
+    toDate !== "" ||
+    minDuration !== "" ||
+    maxDuration !== "";
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -34,18 +41,6 @@ const AlarmFilterPopover: React.FC<Props> = ({ data, onFiltered }) => {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const fuzzyMatch = (text: string, pattern: string) => {
-    let pi = 0;
-    let ti = 0;
-
-    while (pi < pattern.length && ti < text.length) {
-      if (pattern[pi] === text[ti]) pi++;
-      ti++;
-    }
-
-    return pi === pattern.length;
-  };
-
   const filteredData = useMemo(() => {
     let result = [...data];
 
@@ -54,17 +49,25 @@ const AlarmFilterPopover: React.FC<Props> = ({ data, onFiltered }) => {
       result = result.filter((r) => r.priority === priority);
     }
 
-    // Smart search
     if (search.trim()) {
-      const tokens = search.toLowerCase().split(" ").filter(Boolean);
+      const query = search.toLowerCase().replace(/\s+/g, "");
 
       result = result.filter((r) => {
+        const normalizedAlarmCode = r.alarmCode
+          .toLowerCase()
+          .replace(/\s+/g, "");
+
+        // Exact alarm code match after normalization
+        if (normalizedAlarmCode === query) {
+          return true;
+        }
+
+        // Otherwise normal contains search (excluding alarmCode)
         const start = new Date(r.startTime);
         const end = new Date(r.endTime);
 
         const searchable = [
           r.id,
-          r.alarmCode,
           r.rootCauseName,
           r.class,
           r.priority,
@@ -76,9 +79,7 @@ const AlarmFilterPopover: React.FC<Props> = ({ data, onFiltered }) => {
           .join(" ")
           .toLowerCase();
 
-        return tokens.every(
-          (token) => searchable.includes(token) || fuzzyMatch(searchable, token)
-        );
+        return searchable.includes(search.toLowerCase());
       });
     }
 
@@ -129,13 +130,33 @@ const AlarmFilterPopover: React.FC<Props> = ({ data, onFiltered }) => {
   };
 
   return (
-    <div className="relative z-[99]" ref={ref}>
+    <div className="relative z-[97] flex items-center gap-2" ref={ref}>
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="w-9 h-9 rounded-md border border-gray-200 hover:bg-gray-50 transition flex items-center justify-center"
+        className={`w-9 h-9 rounded-md border transition flex items-center justify-center ${
+          isFilterActive
+            ? "border-[#2d1653] bg-[#2d1653]/10"
+            : "border-gray-200 hover:bg-gray-50"
+        }`}
       >
-        <Filter className="w-4 h-4 text-gray-600" />
+        <Filter
+          className={`w-4 h-4 ${
+            isFilterActive ? "text-[#2d1653]" : "text-gray-600"
+          }`}
+        />
       </button>
+
+      {isFilterActive && (
+        <button
+          onClick={clear}
+          className="w-9 h-9 rounded-md border border-gray-200 
+               hover:bg-gray-50 transition 
+               flex items-center justify-center"
+          title="Clear filters"
+        >
+          <X className="w-4 h-4 text-gray-600" />
+        </button>
+      )}
 
       {open && (
         <div className="absolute right-0 mt-2 w-[340px] bg-white border border-gray-200 rounded-xl shadow-xl p-5 space-y-5">

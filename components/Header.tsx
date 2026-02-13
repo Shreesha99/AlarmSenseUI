@@ -63,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-[56px] bg-[#2d1653] text-white flex items-center justify-between px-6 z-50 border-b border-white/10 shadow-lg">
+    <header className=" z-[98] fixed top-0 left-0 right-0 h-[56px] bg-[#2d1653] text-white flex items-center justify-between px-6 z-50 border-b border-white/10 shadow-lg">
       {/* Left Section */}
       <div className="flex items-center space-x-4">
         <div className="flex items-center space-x-3">

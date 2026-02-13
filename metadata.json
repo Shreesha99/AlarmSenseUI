@@ -1,5 +1,10 @@
 {
-  "name": "Siemens AlarmSense SCADA",
-  "description": "An enterprise-grade SCADA alarm management dashboard featuring site-specific turbine analysis, root cause tracking, and historical alarm grids.",
+  "name": "AlarmSense AI",
+  "description": "AlarmSense AI is an enterprise-grade industrial alarm analytics platform designed for Siemens Energy environments. It enables intelligent root cause investigation, turbine-level alarm filtering, time-window analysis, and structured historical alarm visualization within a high-performance SCADA-style interface.",
+  "short_name": "AlarmSense",
+  "theme_color": "#2d1653",
+  "background_color": "#f4f7f9",
+  "display": "standalone",
+  "orientation": "landscape",
   "requestFramePermissions": []
 }

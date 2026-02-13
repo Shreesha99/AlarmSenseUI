@@ -93,7 +93,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
         ${
           disabled
             ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-            : "bg-gray-50 hover:border-gray-400 cursor-pointer"
+            : "bg-white hover:border-[#00646C] focus:border-[#00646C] cursor-pointer"
         }
         ${error ? "border-red-400 ring-1 ring-red-100" : "border-gray-300"}
         `}
@@ -103,8 +103,8 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
         </span>
 
         <ChevronDown
-          className={`w-4 h-4 ml-2 transition-transform ${
-            isOpen ? "rotate-180" : ""
+          className={`w-4 h-4 ml-2 transition-transform text-gray-500 ${
+            isOpen ? "rotate-180 text-[#00646C]" : ""
           }`}
         />
       </div>
@@ -118,7 +118,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
 
       {/* Dropdown List */}
       {isOpen && !disabled && (
-        <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded shadow-lg max-h-60 overflow-auto animate-fadeIn">
+        <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
           {options.length === 0 ? (
             <div className="px-3 py-2 text-sm text-gray-400">No options</div>
           ) : (
@@ -133,8 +133,8 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
                 className={`px-3 py-2 text-sm cursor-pointer transition-colors
                 ${
                   index === highlightIndex
-                    ? "bg-blue-50 text-blue-700"
-                    : "hover:bg-gray-100"
+                    ? "bg-[#00646C]/10 text-[#00646C]"
+                    : "hover:bg-gray-50"
                 }
                 ${
                   opt.value === value

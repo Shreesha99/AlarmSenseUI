@@ -74,23 +74,23 @@ const AlarmPagination: React.FC<Props> = ({
           <button
             onClick={() => onPageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
-            className="p-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+            className="p-2 rounded-md border border-gray-200 bg-white hover:border-[#00646C]/40 hover:text-[#00646C] disabled:opacity-40 disabled:cursor-not-allowed transition"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
 
-          <div className="px-4 py-1.5 text-sm font-semibold bg-[#2d1653] text-white rounded-md shadow-sm">
+          <div className="px-4 py-1.5 text-sm font-semibold bg-[#00646C] text-white rounded-md">
             {currentPage}
           </div>
 
-          <span className="text-sm text-gray-400 font-medium">
+          <span className="text-sm text-gray-500 font-medium">
             of {totalPages || 1}
           </span>
 
           <button
             onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages || totalPages === 0}
-            className="p-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+            className="p-2 rounded-md border border-gray-200 bg-white hover:border-[#00646C]/40 hover:text-[#00646C] disabled:opacity-40 disabled:cursor-not-allowed transition"
           >
             <ChevronRight className="w-4 h-4" />
           </button>

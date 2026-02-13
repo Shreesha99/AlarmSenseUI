@@ -35,9 +35,9 @@ const AlarmSearchForm: React.FC<Props> = ({
   }));
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
-      <div className="px-6 py-3 bg-gray-50 border-b border-gray-200 flex items-center">
-        <div className="w-1 h-4 bg-blue-600 rounded-full mr-2"></div>
+    <div className="bg-white rounded-md border border-gray-200">
+      <div className="px-6 py-3 bg-white border-b border-gray-200 flex items-center">
+        <div className="w-1 h-4 bg-[#00646C] rounded-full mr-2"></div>
         <h2 className="text-sm font-bold text-gray-800 uppercase tracking-tight">
           Root Cause Investigation
         </h2>
@@ -48,7 +48,7 @@ const AlarmSearchForm: React.FC<Props> = ({
         className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6"
       >
         <div className="sm:col-span-1 lg:col-span-2 flex flex-col gap-2">
-          <label className="text-[11px] font-bold text-gray-500 uppercase">
+          <label className="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">
             Site Location
           </label>
           <CustomDropdown
@@ -61,7 +61,7 @@ const AlarmSearchForm: React.FC<Props> = ({
         </div>
 
         <div className="sm:col-span-1 lg:col-span-2 flex flex-col gap-2">
-          <label className="text-[11px] font-bold text-gray-500 uppercase">
+          <label className="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">
             Asset / Turbine
           </label>
           <CustomDropdown
@@ -76,7 +76,7 @@ const AlarmSearchForm: React.FC<Props> = ({
         </div>
 
         <div className="sm:col-span-2 lg:col-span-3 flex flex-col gap-2">
-          <label className="text-[11px] font-bold text-gray-500 uppercase">
+          <label className="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">
             Analysis Window Start
           </label>
           <CustomDateTimePicker
@@ -87,7 +87,7 @@ const AlarmSearchForm: React.FC<Props> = ({
         </div>
 
         <div className="sm:col-span-2 lg:col-span-3 flex flex-col gap-2">
-          <label className="text-[11px] font-bold text-gray-500 uppercase">
+          <label className="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">
             Analysis Window End
           </label>
           <CustomDateTimePicker

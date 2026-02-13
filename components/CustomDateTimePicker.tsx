@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import CustomButton from "@/components/CustomButton";
 
 interface Props {
   value: string;
@@ -95,11 +96,11 @@ const CustomDateTimePicker: React.FC<Props> = ({
       {/* Trigger */}
       <div
         onClick={() => !disabled && setIsOpen((prev) => !prev)}
-        className={`px-3 py-2 border rounded text-sm cursor-pointer bg-gray-50 transition-all
+        className={`px-3 py-2 border rounded text-sm cursor-pointer transition-all
         ${
           disabled
             ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-            : "hover:border-gray-400"
+            : "bg-white hover:border-[#00646C] hover:ring-1 hover:ring-[#00646C]/20"
         }
         ${error ? "border-red-400 ring-1 ring-red-100" : "border-gray-300"}
         `}
@@ -109,7 +110,7 @@ const CustomDateTimePicker: React.FC<Props> = ({
 
       {/* Panel */}
       {isOpen && !disabled && (
-        <div className="absolute z-50 mt-2 bg-white border border-gray-200 rounded shadow-lg p-4 w-[300px]">
+        <div className="absolute z-50 mt-2 bg-white border border-gray-200 rounded-md shadow-lg p-4 w-[300px]">
           {/* Month Navigation */}
           <div className="flex justify-between items-center mb-3">
             <button
@@ -119,7 +120,7 @@ const CustomDateTimePicker: React.FC<Props> = ({
                   new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1)
                 )
               }
-              className="px-2 py-1 text-sm hover:bg-gray-100 rounded"
+              className="px-2 py-1 text-sm hover:bg-[#00646C]/10 rounded transition"
             >
               ‹
             </button>
@@ -138,7 +139,7 @@ const CustomDateTimePicker: React.FC<Props> = ({
                   new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1)
                 )
               }
-              className="px-2 py-1 text-sm hover:bg-gray-100 rounded"
+              className="px-2 py-1 text-sm hover:bg-[#00646C]/10 rounded transition"
             >
               ›
             </button>
@@ -165,7 +166,7 @@ const CustomDateTimePicker: React.FC<Props> = ({
                     ${
                       selectedDate &&
                       date.toDateString() === selectedDate.toDateString()
-                        ? "bg-[#00646c] text-white"
+                        ? "bg-[#00646C] text-white"
                         : "hover:bg-gray-100"
                     }
                     `}
@@ -192,7 +193,7 @@ const CustomDateTimePicker: React.FC<Props> = ({
                   selectedDate?.getMinutes() ?? 0
                 )
               }
-              className="w-1/2 border rounded px-2 py-1 text-sm"
+              className="w-1/2 border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#00646C] focus:border-[#00646C]"
               placeholder="HH"
             />
             <input
@@ -206,19 +207,20 @@ const CustomDateTimePicker: React.FC<Props> = ({
                   Number(e.target.value)
                 )
               }
-              className="w-1/2 border rounded px-2 py-1 text-sm"
+              className="w-1/2 border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#00646C] focus:border-[#00646C]"
               placeholder="MM"
             />
           </div>
 
-          {/* Confirm */}
-          <button
+          <CustomButton
             type="button"
+            variant="primary"
+            size="md"
+            fullWidth
             onClick={confirmSelection}
-            className="w-full bg-[#00646c] text-white py-2 rounded text-sm font-semibold"
           >
             Apply
-          </button>
+          </CustomButton>
         </div>
       )}
     </div>

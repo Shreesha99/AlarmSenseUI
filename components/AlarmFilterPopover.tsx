@@ -135,13 +135,13 @@ const AlarmFilterPopover: React.FC<Props> = ({ data, onFiltered }) => {
         onClick={() => setOpen((prev) => !prev)}
         className={`w-9 h-9 rounded-md border transition flex items-center justify-center ${
           isFilterActive
-            ? "border-[#2d1653] bg-[#2d1653]/10"
+            ? "border-[#00646C] bg-[#00646C]/10"
             : "border-gray-200 hover:bg-gray-50"
         }`}
       >
         <Filter
           className={`w-4 h-4 ${
-            isFilterActive ? "text-[#2d1653]" : "text-gray-600"
+            isFilterActive ? "text-[#00646C]" : "text-gray-600"
           }`}
         />
       </button>
@@ -149,9 +149,11 @@ const AlarmFilterPopover: React.FC<Props> = ({ data, onFiltered }) => {
       {isFilterActive && (
         <button
           onClick={clear}
-          className="w-9 h-9 rounded-md border border-gray-200 
-               hover:bg-gray-50 transition 
-               flex items-center justify-center"
+          className={`w-9 h-9 rounded-md border transition flex items-center justify-center ${
+            isFilterActive
+              ? "border-[#00646C]/30 hover:bg-[#00646C]/5"
+              : "border-gray-200 hover:bg-gray-50"
+          }`}
           title="Clear filters"
         >
           <X className="w-4 h-4 text-gray-600" />
@@ -159,7 +161,7 @@ const AlarmFilterPopover: React.FC<Props> = ({ data, onFiltered }) => {
       )}
 
       {open && (
-        <div className="absolute right-0 mt-2 w-[340px] bg-white border border-gray-200 rounded-xl shadow-xl p-5 space-y-5">
+        <div className="absolute right-0 mt-2 w-[340px] bg-white border border-gray-200 rounded-md shadow-lg p-5 space-y-5">
           {/* Smart Search */}
           <div>
             <label className="text-xs text-gray-500 uppercase">
@@ -170,7 +172,8 @@ const AlarmFilterPopover: React.FC<Props> = ({ data, onFiltered }) => {
               placeholder="Search ID, Code, Root Cause..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="mt-1 w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-[#2d1653] focus:outline-none"
+              className="mt-1 w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-[#00646C]
+              focus:outline-none"
             />
           </div>
 

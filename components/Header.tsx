@@ -63,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-[56px] bg-[#2d1653] text-white flex items-center justify-between px-6 border-b border-white/10 shadow-lg z-40">
+    <header className="fixed top-0 left-0 right-0 h-[56px] bg-[#00646C] text-white flex items-center justify-between px-6 border-b border-[#004F55] shadow-md z-40">
       {/* Left Section */}
       <div className="flex items-center space-x-4">
         <div className="flex items-center space-x-3">
@@ -76,33 +76,33 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
 
         <div className="h-6 w-[1px] bg-white/20"></div>
 
-        <div className="text-xs font-medium tracking-widest text-white/70 flex items-center">
-          <span className="text-white">ALARM SENSE</span>
+        <div className="text-xs font-semibold tracking-wider text-white/90">
+          ALARM SENSE
         </div>
       </div>
 
       {/* Right Section */}
       <div className="flex items-center space-x-6">
-        <div className="hidden lg:flex flex-col items-end text-[10px] text-white/60 leading-tight">
+        <div className="hidden lg:flex flex-col items-end text-[10px] text-white/80 leading-tight">
           <span className="font-mono">
             SERVER ID: {serverSite || "Loading..."}
           </span>
           <span>{utcTime}</span>
         </div>
 
-        <div className="h-8 w-[1px] bg-white/10"></div>
+        <div className="h-8 w-[1px] bg-white/20"></div>
 
         <div className="flex items-center space-x-3 cursor-pointer group">
           <div className="flex flex-col items-end">
-            <span className="text-xs font-semibold group-hover:text-cyan-400 transition-colors">
+            <span className="text-xs font-semibold group-hover:text-white transition-colors">
               {currentUser.name}
             </span>
-            <span className="text-[9px] opacity-50 uppercase">
+            <span className="text-[9px] text-white/70 uppercase">
               {currentUser.role}
             </span>
           </div>
 
-          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center font-bold text-sm shadow-inner">
+          <div className="w-9 h-9 rounded-full bg-white/15 border border-white/20 flex items-center justify-center font-semibold text-sm backdrop-blur-sm">
             {initials}
           </div>
         </div>

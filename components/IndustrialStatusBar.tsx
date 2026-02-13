@@ -43,42 +43,57 @@ const IndustrialStatusBar: React.FC = () => {
   }, []);
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 h-7 bg-[#232323] text-white flex items-center px-4 justify-between z-50 text-[10px] border-t border-white/5 font-medium uppercase tracking-widest shadow-[0_-2px_10px_rgba(0,0,0,0.2)]">
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center space-x-1.5">
+    <footer className="fixed bottom-0 left-0 right-0 h-9 bg-white border-t border-gray-200 flex items-center px-6 justify-between z-40 text-[11px] font-medium shadow-sm">
+      {/* Left Section */}
+      <div className="flex items-center space-x-6">
+        {/* Health Indicator */}
+        <div className="flex items-center space-x-2">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-[#00646C]/40"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00646C]"></span>
           </span>
-          <span className="text-green-400">System Healthy</span>
+          <span className="text-[#00646C] font-semibold">System Healthy</span>
         </div>
 
-        <div className="w-[1px] h-3 bg-white/10"></div>
+        <div className="w-[1px] h-4 bg-gray-200"></div>
 
-        <div className="flex items-center space-x-1.5 text-gray-400">
-          <span className="text-blue-400">Node:</span> {node}
+        {/* Node */}
+        <div className="flex items-center space-x-1 text-gray-600">
+          <span className="text-gray-400 uppercase tracking-wide text-[10px]">
+            Node
+          </span>
+          <span className="font-semibold text-gray-800">{node}</span>
         </div>
       </div>
 
-      <div className="flex items-center space-x-6">
-        <div className="flex space-x-3 text-gray-400">
-          <span>
-            RAM:{" "}
-            <span className="text-white">
-              {ramUsed}GB / {TOTAL_RAM}GB
-            </span>
+      {/* Right Section */}
+      <div className="flex items-center space-x-8">
+        {/* RAM */}
+        <div className="flex items-center space-x-2">
+          <span className="text-gray-400 uppercase tracking-wide text-[10px]">
+            RAM
           </span>
-
-          <span>
-            CPU: <span className="text-white">{cpu}%</span>
+          <span className="font-semibold text-gray-800">
+            {ramUsed}GB / {TOTAL_RAM}GB
           </span>
         </div>
 
-        <div className="w-[1px] h-3 bg-white/10"></div>
-
+        {/* CPU */}
         <div className="flex items-center space-x-2">
-          <span className="text-gray-400">Security Level:</span>
-          <span className="px-1.5 py-0.5 bg-yellow-500/20 text-yellow-500 rounded-sm border border-yellow-500/30 font-black">
+          <span className="text-gray-400 uppercase tracking-wide text-[10px]">
+            CPU
+          </span>
+          <span className="font-semibold text-gray-800">{cpu}%</span>
+        </div>
+
+        <div className="w-[1px] h-4 bg-gray-200"></div>
+
+        {/* Security */}
+        <div className="flex items-center space-x-2">
+          <span className="text-gray-400 uppercase tracking-wide text-[10px]">
+            Security
+          </span>
+          <span className="px-2 py-0.5 bg-[#00646C]/10 text-[#00646C] rounded border border-[#00646C]/20 font-semibold">
             Medium
           </span>
         </div>

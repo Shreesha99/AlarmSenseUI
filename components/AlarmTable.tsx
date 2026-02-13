@@ -5,6 +5,7 @@ import AlarmPagination from "@/components/AlarmPagination";
 import AlarmDetailsOverlay from "@/components/AlarmDetailsOverlay";
 import AlarmFilterPopover from "./AlarmFilterPopover";
 import { Download, FileSearch, SearchX } from "lucide-react";
+import CustomButton from "@/components/CustomButton";
 
 interface Props {
   results: RootCauseResult[];
@@ -81,15 +82,15 @@ const AlarmTable: React.FC<Props> = ({
 
   return (
     <>
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col min-h-[520px]">
+      <div className="bg-white rounded-md border border-gray-200 flex flex-col min-h-[520px]">
         {/* Header */}
-        <div className="px-4 sm:px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="px-4 sm:px-6 py-4 border-b border-gray-100 bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-sm font-semibold text-gray-800">
               Root Cause Candidates
             </span>
 
-            <div className="px-3 py-1 bg-blue-50 text-blue-700 text-[11px] font-bold rounded-full border border-blue-100">
+            <div className="px-3 py-1 bg-[#00646C]/10 text-[#00646C] border border-[#00646C]/20 text-[11px] font-bold rounded-full">
               {filteredResults.length} ENTRIES
             </div>
           </div>
@@ -101,13 +102,14 @@ const AlarmTable: React.FC<Props> = ({
             />
 
             {results.length > 0 && (
-              <button
+              <CustomButton
                 onClick={exportToCSV}
-                className="flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold bg-[#2d1653] text-white rounded-md hover:opacity-90 transition w-full sm:w-auto"
+                variant="primary"
+                size="sm"
+                icon={<Download className="w-4 h-4" />}
               >
-                <Download className="w-4 h-4" />
-                <span>Export CSV</span>
-              </button>
+                Export CSV
+              </CustomButton>
             )}
           </div>
         </div>
@@ -119,7 +121,7 @@ const AlarmTable: React.FC<Props> = ({
             }
           >
             <table className="min-w-[700px] w-full text-sm">
-              <thead className="bg-gray-50 text-gray-500 text-[11px] font-semibold uppercase tracking-wider border-b border-gray-200 sticky top-0 z-10">
+              <thead className="bg-gray-100 text-gray-500 text-[11px] font-semibold uppercase tracking-wider border-b border-gray-200 sticky top-0 z-10">
                 <tr>
                   <th className="px-4 sm:px-6 py-4 text-left">Time Window</th>
                   <th className="px-4 sm:px-6 py-4 text-left">Root Cause</th>
@@ -144,7 +146,7 @@ const AlarmTable: React.FC<Props> = ({
                     .map((row) => (
                       <tr
                         key={row.id}
-                        className="group hover:bg-blue-50/30 transition"
+                        className="group hover:bg-[#00646C]/5 transition"
                       >
                         <td className="px-4 sm:px-6 py-5">
                           <div className="flex flex-col space-y-1">
@@ -178,12 +180,14 @@ const AlarmTable: React.FC<Props> = ({
                         </td>
 
                         <td className="px-4 sm:px-6 py-5 text-center">
-                          <button
+                          <CustomButton
+                            size="sm"
+                            variant="ghost"
                             onClick={() => setSelected(row)}
-                            className="px-3 py-1.5 text-xs font-semibold rounded-md border border-blue-200 text-blue-600 hover:bg-blue-100 transition w-full sm:w-auto"
+                            className="border border-[#00646C]/30 text-[#00646C] hover:bg-[#00646C]/5 w-full sm:w-auto"
                           >
                             Details
-                          </button>
+                          </CustomButton>
                         </td>
                       </tr>
                     ))

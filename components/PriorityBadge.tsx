@@ -1,28 +1,43 @@
 import React from "react";
-import { PriorityColor } from "@/types";
+import { AlertTriangle, AlertCircle } from "lucide-react";
 
 interface Props {
   priority: "P1" | "P2";
 }
 
 const PriorityBadge: React.FC<Props> = ({ priority }) => {
-  const tooltipText =
-    priority === "P1" ? "Critical priority" : "Moderate priority";
+  const isCritical = priority === "P1";
+
+  const tooltipText = isCritical ? "Critical priority" : "Moderate priority";
 
   return (
     <span className="relative inline-flex items-center group">
       {/* Badge */}
       <span
         className={`
-          ${PriorityColor[priority]}
-          transition-transform duration-150
-          hover:scale-[1.04]
+          inline-flex items-center gap-1.5
+          px-2.5 py-1
+          text-[11px] font-semibold
+          rounded-md
+          border
+          transition-all duration-200
+          ${
+            isCritical
+              ? "bg-red-50 text-red-700 border-red-200"
+              : "bg-amber-50 text-amber-700 border-amber-200"
+          }
+          hover:shadow-sm
         `}
       >
+        {isCritical ? (
+          <AlertTriangle className="w-3 h-3" />
+        ) : (
+          <AlertCircle className="w-3 h-3" />
+        )}
         {priority}
       </span>
 
-      {/* Subtle Tooltip */}
+      {/* Tooltip */}
       <span
         className="
           pointer-events-none

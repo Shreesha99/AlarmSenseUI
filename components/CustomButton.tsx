@@ -24,7 +24,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     "relative inline-flex items-center justify-center font-semibold rounded transition-all duration-200 focus:outline-none active:scale-[0.97] disabled:opacity-60 disabled:cursor-not-allowed overflow-hidden";
 
   const variants = {
-    primary: "bg-[#2d1653] hover:bg-[#241244] text-white shadow-md",
+    primary: "bg-[#00646C] hover:bg-[#005257] text-white",
     secondary: "bg-gray-200 hover:bg-gray-300 text-gray-800",
     danger: "bg-red-600 hover:bg-red-700 text-white",
     ghost: "bg-transparent hover:bg-gray-100 text-gray-700",

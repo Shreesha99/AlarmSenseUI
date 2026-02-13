@@ -45,14 +45,12 @@ const AlarmSearchForm: React.FC<Props> = ({
 
       <form
         onSubmit={onSubmit}
-        className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6"
+        className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6"
       >
-        {/* Site */}
-        <div className="lg:col-span-2 flex flex-col gap-2">
-          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+        <div className="sm:col-span-1 lg:col-span-2 flex flex-col gap-2">
+          <label className="text-[11px] font-bold text-gray-500 uppercase">
             Site Location
           </label>
-
           <CustomDropdown
             value={filter.siteId}
             options={siteOptions}
@@ -62,12 +60,10 @@ const AlarmSearchForm: React.FC<Props> = ({
           />
         </div>
 
-        {/* Turbine */}
-        <div className="lg:col-span-2 flex flex-col gap-2">
-          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+        <div className="sm:col-span-1 lg:col-span-2 flex flex-col gap-2">
+          <label className="text-[11px] font-bold text-gray-500 uppercase">
             Asset / Turbine
           </label>
-
           <CustomDropdown
             value={filter.turbineId}
             options={turbineOptions}
@@ -78,36 +74,29 @@ const AlarmSearchForm: React.FC<Props> = ({
           />
         </div>
 
-        {/* Start Date */}
-        <div className="lg:col-span-3 flex flex-col gap-2">
-          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+        <div className="sm:col-span-2 lg:col-span-3 flex flex-col gap-2">
+          <label className="text-[11px] font-bold text-gray-500 uppercase">
             Analysis Window Start
           </label>
-
           <CustomDateTimePicker
             value={filter.startDateTime}
             onChange={(val) => onChange("startDateTime", val)}
             error={!!errors.startDateTime}
-            placeholder="Select Start Date"
           />
         </div>
 
-        {/* End Date */}
-        <div className="lg:col-span-3 flex flex-col gap-2">
-          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+        <div className="sm:col-span-2 lg:col-span-3 flex flex-col gap-2">
+          <label className="text-[11px] font-bold text-gray-500 uppercase">
             Analysis Window End
           </label>
-
           <CustomDateTimePicker
             value={filter.endDateTime}
             onChange={(val) => onChange("endDateTime", val)}
             error={!!errors.endDateTime}
-            placeholder="Select End Date"
           />
         </div>
 
-        {/* Submit Button */}
-        <div className="lg:col-span-2 flex items-end">
+        <div className="sm:col-span-2 lg:col-span-2 flex items-end">
           <CustomButton
             type="submit"
             loading={loading}

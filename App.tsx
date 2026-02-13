@@ -2,24 +2,24 @@ import React, { useState } from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import AlarmSense from "@/pages/AlarmSense";
-import IndustrialStatusBar from "@/components/IndustrialStatusBar";
+// import IndustrialStatusBar from "@/components/IndustrialStatusBar";
 
 const App: React.FC = () => {
   const [activePage] = useState("alarmsense");
 
   return (
-    <div className="min-h-screen flex flex-col font-sans antialiased text-gray-900">
+    <div className="min-h-screen flex flex-col font-sans antialiased text-gray-900 overflow-hidden">
       <Header />
 
-      <div className="flex flex-1 pt-[56px] pb-[28px]">
+      <div className="flex flex-1 pt-[56px]">
         <Sidebar activePage={activePage} />
 
-        <main className="flex-1 ml-[240px] p-10 overflow-y-auto">
-          <div className="max-w-7xl mx-auto">
+        <main className="flex-1 p-6 sm:p-8 lg:p-10 overflow-y-auto transition-all duration-300">
+          <div className="max-w-7xl mx-auto w-full">
             {activePage === "alarmsense" ? (
               <AlarmSense />
             ) : (
-              <div className="bg-white p-20 text-center rounded-xl border border-dashed border-gray-300">
+              <div className="bg-white p-10 sm:p-16 lg:p-20 text-center rounded-xl border border-dashed border-gray-300">
                 <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg
                     className="w-10 h-10 text-gray-300"

@@ -1,4 +1,5 @@
 import React from "react";
+import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 
 interface Props {
   resultsLength: number;
@@ -23,12 +24,13 @@ const AlarmPagination: React.FC<Props> = ({
   const end = Math.min(currentPage * pageSize, resultsLength);
 
   return (
-    <div className="px-6 py-4 bg-white border-t border-gray-200 flex items-center justify-between">
+    <div className="px-4 sm:px-6 py-4 bg-white border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
       {/* Left Info */}
-      <div className="flex flex-col">
+      <div className="flex flex-col text-center sm:text-left">
         <span className="text-[11px] uppercase tracking-wide text-gray-400 font-semibold">
           Showing Records
         </span>
+
         <span className="text-sm font-medium text-gray-700 mt-1">
           {resultsLength > 0 ? (
             <>
@@ -46,10 +48,10 @@ const AlarmPagination: React.FC<Props> = ({
         </span>
       </div>
 
-      {/* Right Controls */}
-      <div className="flex items-center space-x-6">
+      {/* Controls */}
+      <div className="flex flex-col sm:flex-row items-center gap-6">
         {/* Page Size */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-3">
           <span className="text-[11px] uppercase tracking-wide text-gray-400 font-semibold">
             Rows
           </span>
@@ -67,35 +69,20 @@ const AlarmPagination: React.FC<Props> = ({
               ))}
             </select>
 
-            {/* Chevron */}
-            <svg
-              className="w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
+            <ChevronDown className="w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           </div>
         </div>
 
         {/* Navigation */}
-        <div className="flex items-center space-x-3">
-          {/* Prev */}
+        <div className="flex items-center gap-3">
           <button
             onClick={() => onPageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
-            className="px-3 py-1.5 text-sm font-medium rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+            className="p-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
           >
-            ←
+            <ChevronLeft className="w-4 h-4" />
           </button>
 
-          {/* Page Indicator */}
           <div className="px-4 py-1.5 text-sm font-semibold bg-[#2d1653] text-white rounded-md shadow-sm">
             {currentPage}
           </div>
@@ -104,13 +91,12 @@ const AlarmPagination: React.FC<Props> = ({
             of {totalPages || 1}
           </span>
 
-          {/* Next */}
           <button
             onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages || totalPages === 0}
-            className="px-3 py-1.5 text-sm font-medium rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+            className="p-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
           >
-            →
+            <ChevronRight className="w-4 h-4" />
           </button>
         </div>
       </div>

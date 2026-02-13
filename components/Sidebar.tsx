@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  BrainCircuit,
+  Wind,
+  Cpu,
+} from "lucide-react";
 
 interface SidebarProps {
   activePage: string;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ activePage }) => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  // Auto collapse on mobile
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setCollapsed(true);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const sections = [
     // {
     //   title: "Operations",
@@ -27,54 +49,102 @@ const Sidebar: React.FC<SidebarProps> = ({ activePage }) => {
         {
           id: "alarmsense",
           label: "AlarmSense AI",
-          icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.989-2.386l-.548-.547z",
+          icon: BrainCircuit,
         },
         // {
         //   id: "turbines",
         //   label: "Performance",
-        //   icon: "M13 10V3L4 14h7v7l9-11h-7z",
+        //   icon: Cpu,
         // },
       ],
     },
   ];
 
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const effectiveCollapsed = isMobile ? true : collapsed;
+
   return (
-    <aside className="fixed left-0 top-[56px] bottom-0 w-[240px] bg-white border-r border-gray-200 flex flex-col z-40">
-      <div className="flex-1 py-6 overflow-y-auto">
+    <aside
+      className={`flex flex-col bg-white border-r border-gray-200 transition-all duration-300 ${
+        effectiveCollapsed ? "w-[72px]" : "w-[240px]"
+      }`}
+    >
+      <div className="flex items-center justify-between px-4 py-4">
+        {!effectiveCollapsed && (
+          <span className="text-sm font-semibold text-gray-700">
+            Navigation
+          </span>
+        )}
+
+        {!isMobile && (
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="p-2 rounded-md hover:bg-gray-100 transition-colors duration-200"
+          >
+            {effectiveCollapsed ? (
+              <ChevronRight className="w-5 h-5 text-gray-600" />
+            ) : (
+              <ChevronLeft className="w-5 h-5 text-gray-600" />
+            )}
+          </button>
+        )}
+      </div>
+
+      <div className="flex-1 py-2 overflow-y-auto">
         {sections.map((section, idx) => (
           <div key={section.title} className={idx > 0 ? "mt-8" : ""}>
-            <h3 className="px-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">
-              {section.title}
-            </h3>
-            {section.items.map((item) => (
-              <div
-                key={item.id}
-                className={`group flex items-center px-6 py-2.5 cursor-pointer transition-all duration-150 border-r-2 ${
-                  activePage === item.id
-                    ? "bg-blue-50 border-blue-600 text-blue-800"
-                    : "border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                }`}
-              >
-                <svg
-                  className={`w-5 h-5 mr-3 ${
-                    activePage === item.id
-                      ? "text-blue-600"
-                      : "text-gray-400 group-hover:text-gray-600"
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  dangerouslySetInnerHTML={{ __html: item.icon }}
-                ></svg>
-                <span
-                  className={`text-sm ${
-                    activePage === item.id ? "font-semibold" : "font-medium"
-                  }`}
-                >
-                  {item.label}
-                </span>
-              </div>
-            ))}
+            {!effectiveCollapsed && (
+              <h3 className="px-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 select-none">
+                {section.title}
+              </h3>
+            )}
+
+            <div className="space-y-1">
+              {section.items.map((item) => {
+                const isActive = activePage === item.id;
+                const Icon = item.icon as any;
+
+                return (
+                  <div
+                    key={item.id}
+                    role="button"
+                    aria-current={isActive ? "page" : undefined}
+                    className={`group relative flex items-center ${
+                      effectiveCollapsed ? "justify-center px-0" : "px-6"
+                    } py-2.5 cursor-pointer transition-all duration-200 border-r-2 rounded-l-lg
+                    ${
+                      isActive
+                        ? "bg-blue-50 border-blue-600 text-blue-800"
+                        : "border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                    }`}
+                  >
+                    <Icon
+                      className={`w-5 h-5 ${
+                        effectiveCollapsed ? "" : "mr-3"
+                      } transition-colors duration-200 ${
+                        isActive
+                          ? "text-blue-600"
+                          : "text-gray-400 group-hover:text-gray-600"
+                      }`}
+                    />
+
+                    {!effectiveCollapsed && (
+                      <span
+                        className={`text-sm transition-all duration-200 ${
+                          isActive ? "font-semibold" : "font-medium"
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    )}
+
+                    {isActive && (
+                      <span className="absolute right-0 top-0 bottom-0 w-[2px] bg-blue-600 rounded-full" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         ))}
       </div>

@@ -3,9 +3,8 @@ import { RootCauseResult } from "@/types";
 import PriorityBadge from "@/components/PriorityBadge";
 import AlarmPagination from "@/components/AlarmPagination";
 import AlarmDetailsOverlay from "@/components/AlarmDetailsOverlay";
-import AlarmAdvancedFilter from "@/components/AlarmAdvancedFilter";
 import AlarmFilterPopover from "./AlarmFilterPopover";
-import { Download } from "lucide-react";
+import { Download, FileSearch, SearchX } from "lucide-react";
 
 interface Props {
   results: RootCauseResult[];
@@ -84,9 +83,8 @@ const AlarmTable: React.FC<Props> = ({
     <>
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col min-h-[520px]">
         {/* Header */}
-
-        <div className="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+        <div className="px-4 sm:px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-3">
             <span className="text-sm font-semibold text-gray-800">
               Root Cause Candidates
             </span>
@@ -96,7 +94,7 @@ const AlarmTable: React.FC<Props> = ({
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <AlarmFilterPopover
               data={results}
               onFiltered={setFilteredResults}
@@ -105,10 +103,10 @@ const AlarmTable: React.FC<Props> = ({
             {results.length > 0 && (
               <button
                 onClick={exportToCSV}
-                className="flex items-center space-x-2 px-4 py-2 text-xs font-semibold bg-[#2d1653] text-white rounded-md hover:opacity-90 transition"
+                className="flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold bg-[#2d1653] text-white rounded-md hover:opacity-90 transition w-full sm:w-auto"
               >
                 <Download className="w-4 h-4" />
-                <span>CSV</span>
+                <span>Export CSV</span>
               </button>
             )}
           </div>
@@ -116,14 +114,14 @@ const AlarmTable: React.FC<Props> = ({
 
         {/* Table */}
         <div className="flex-1 overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="min-w-[700px] w-full text-sm">
             <thead className="bg-gray-50 text-gray-500 text-[11px] font-semibold uppercase tracking-wider border-b border-gray-200 sticky top-0 z-10">
               <tr>
-                <th className="px-6 py-4 text-left">Time Window</th>
-                <th className="px-6 py-4 text-left">Identified Root Cause</th>
-                <th className="px-6 py-4 text-left">Alarm Code</th>
-                <th className="px-6 py-4 text-left">Priority</th>
-                <th className="px-6 py-4 text-center">Action</th>
+                <th className="px-4 sm:px-6 py-4 text-left">Time Window</th>
+                <th className="px-4 sm:px-6 py-4 text-left">Root Cause</th>
+                <th className="px-4 sm:px-6 py-4 text-left">Alarm Code</th>
+                <th className="px-4 sm:px-6 py-4 text-left">Priority</th>
+                <th className="px-4 sm:px-6 py-4 text-center">Action</th>
               </tr>
             </thead>
 
@@ -142,67 +140,43 @@ const AlarmTable: React.FC<Props> = ({
                   .map((row) => (
                     <tr
                       key={row.id}
-                      className="group hover:bg-blue-50/30 transition-all duration-150"
+                      className="group hover:bg-blue-50/30 transition"
                     >
-                      <td className="px-6 py-5">
+                      <td className="px-4 sm:px-6 py-5">
                         <div className="flex flex-col space-y-1">
-                          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                            {new Date(row.startTime).toLocaleDateString(
-                              undefined,
-                              {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                              }
-                            )}
+                          <div className="text-xs font-semibold text-gray-500 uppercase">
+                            {new Date(row.startTime).toLocaleDateString()}
                           </div>
-
-                          <div className="flex items-center space-x-2 text-sm font-medium text-gray-800">
-                            <span>
-                              {new Date(row.startTime).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </span>
-
-                            <span className="text-gray-400 text-xs">→</span>
-
-                            <span>
-                              {new Date(row.endTime).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </span>
-                          </div>
-
-                          <div className="text-[11px] text-gray-400">
-                            Duration:{" "}
-                            {Math.round(
-                              (new Date(row.endTime).getTime() -
-                                new Date(row.startTime).getTime()) /
-                                60000
-                            )}{" "}
-                            mins
+                          <div className="text-sm font-medium text-gray-800">
+                            {new Date(row.startTime).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}{" "}
+                            to{" "}
+                            {new Date(row.endTime).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
                           </div>
                         </div>
                       </td>
 
-                      <td className="px-6 py-5 font-semibold text-gray-900">
+                      <td className="px-4 sm:px-6 py-5 font-semibold text-gray-900">
                         {row.rootCauseName}
                       </td>
 
-                      <td className="px-6 py-5 text-gray-600 font-mono text-xs">
+                      <td className="px-4 sm:px-6 py-5 text-gray-600 font-mono text-xs break-all">
                         {row.alarmCode}
                       </td>
 
-                      <td className="px-6 py-5">
+                      <td className="px-4 sm:px-6 py-5">
                         <PriorityBadge priority={row.priority} />
                       </td>
 
-                      <td className="px-6 py-5 text-center">
+                      <td className="px-4 sm:px-6 py-5 text-center">
                         <button
                           onClick={() => setSelected(row)}
-                          className="px-3 py-1.5 text-xs font-semibold rounded-md border border-blue-200 text-blue-600 hover:bg-blue-100 transition-colors"
+                          className="px-3 py-1.5 text-xs font-semibold rounded-md border border-blue-200 text-blue-600 hover:bg-blue-100 transition w-full sm:w-auto"
                         >
                           Details
                         </button>
@@ -211,29 +185,24 @@ const AlarmTable: React.FC<Props> = ({
                   ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="px-6 py-32 text-center">
-                    <div className="flex flex-col items-center opacity-30">
-                      <svg
-                        className="w-16 h-16 mb-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="1"
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
-                      </svg>
+                  <td colSpan={5} className="px-6 py-24 sm:py-32 text-center">
+                    <div className="flex flex-col items-center opacity-40">
+                      {/* Icon */}
+                      {searched ? (
+                        <SearchX className="w-14 h-14 sm:w-16 sm:h-16 mb-4 text-gray-300" />
+                      ) : (
+                        <FileSearch className="w-14 h-14 sm:w-16 sm:h-16 mb-4 text-gray-300" />
+                      )}
 
-                      <span className="text-lg font-medium">
+                      {/* Title */}
+                      <span className="text-base sm:text-lg font-medium">
                         {searched
                           ? "Query returned 0 results"
                           : "Ready for Analysis"}
                       </span>
 
-                      <span className="text-xs max-w-[200px]">
+                      {/* Description */}
+                      <span className="text-xs sm:text-sm max-w-[240px] sm:max-w-sm mt-2">
                         Adjust filters and execute the search to populate the
                         investigation grid.
                       </span>
@@ -246,15 +215,17 @@ const AlarmTable: React.FC<Props> = ({
         </div>
 
         {results.length > 0 && !loading && (
-          <AlarmPagination
-            resultsLength={filteredResults.length}
-            currentPage={currentPage}
-            pageSize={pageSize}
-            totalPages={Math.ceil(filteredResults.length / pageSize)}
-            pageSizeOptions={pageSizeOptions}
-            onPageChange={onPageChange}
-            onPageSizeChange={onPageSizeChange}
-          />
+          <div className="px-4 sm:px-6 pb-4">
+            <AlarmPagination
+              resultsLength={filteredResults.length}
+              currentPage={currentPage}
+              pageSize={pageSize}
+              totalPages={Math.ceil(filteredResults.length / pageSize)}
+              pageSizeOptions={pageSizeOptions}
+              onPageChange={onPageChange}
+              onPageSizeChange={onPageSizeChange}
+            />
+          </div>
         )}
       </div>
 

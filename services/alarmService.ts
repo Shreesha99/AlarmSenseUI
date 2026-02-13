@@ -1,6 +1,11 @@
-import { of, Observable } from "rxjs";
-import { delay } from "rxjs/operators";
+import { of, Observable, from } from "rxjs";
+import { delay, map, catchError } from "rxjs/operators";
 import { Site, Turbine, RootCauseResult, AlarmFilter } from "../types";
+import axios from "axios";
+
+const API_BASE = "https://localhost:7155/api/alarmsense";
+
+/* ---------------- MOCK DATA ---------------- */
 
 const MOCK_SITES: Site[] = [
   { id: "S1", name: "North Sea Wind Park" },
@@ -12,78 +17,95 @@ const MOCK_TURBINES: Turbine[] = [
   { id: "T1-1", siteId: "S1", name: "NS-WTG-001" },
   { id: "T1-2", siteId: "S1", name: "NS-WTG-002" },
   { id: "T1-3", siteId: "S1", name: "NS-WTG-003" },
-  { id: "T2-1", siteId: "S2", name: "TX-WTG-A1" },
-  { id: "T2-2", siteId: "S2", name: "TX-WTG-A2" },
-  { id: "T3-1", siteId: "S3", name: "BV-WTG-X01" },
 ];
 
-// Generate dynamic dates near today so filtering works
-const generateMockResults = (): RootCauseResult[] => {
-  const baseDate = new Date();
+const MOCK_RESULTS: RootCauseResult[] = Array.from({ length: 20 }).map(
+  (_, i) => ({
+    id: `MOCK-${i}`,
+    startTime: new Date().toISOString(),
+    endTime: new Date().toISOString(),
+    rootCauseName: "Mock Root Cause",
+    alarmCode: `AL${1000 + i}`,
+    class: "A",
+    priority: "P1",
+  })
+);
 
-  return Array.from({ length: 45 }).map((_, i) => {
-    const randomOffsetDays = Math.floor(Math.random() * 10) - 5;
+/* ---------------- API RESPONSE TYPE ---------------- */
 
-    const start = new Date(baseDate);
-    start.setDate(start.getDate() + randomOffsetDays);
-    start.setHours(8, 30, 0, 0);
+interface ApiRootCauseResponse {
+  id?: string;
+  Id?: string;
+  startTime?: string;
+  StartTime?: string;
+  endTime?: string;
+  EndTime?: string;
+  rootCauseName?: string;
+  RootCauseName?: string;
+  alarmCode?: string;
+  AlarmCode?: string;
+  class?: string;
+  Class?: string;
+  priority?: string;
+  Priority?: string;
+}
 
-    const end = new Date(start);
-    end.setMinutes(start.getMinutes() + 45);
-
-    return {
-      id: `ALM-${i + 100}`,
-      startTime: start.toISOString(),
-      endTime: end.toISOString(),
-      rootCauseName:
-        i % 3 === 0
-          ? "Gearbox Overheat"
-          : i % 2 === 0
-          ? "Grid Instability"
-          : "Yaw Controller Failure",
-      alarmCode: `ERR-00${Math.floor(Math.random() * 90) + 10}`,
-      class: i % 2 === 0 ? "Mechanical" : "Electrical",
-      priority: i % 5 === 0 ? "High" : i % 3 === 0 ? "Medium" : "Low",
-    };
-  });
-};
-
-const MOCK_RESULTS: RootCauseResult[] = generateMockResults();
+/* ---------------- SERVICE ---------------- */
 
 export class AlarmService {
-  /**
-   * Future API Endpoint: GET /api/alarmsense/sites
-   */
   getSites(): Observable<Site[]> {
-    return of(MOCK_SITES).pipe(delay(400));
+    return from(axios.get<Site[]>(`${API_BASE}/sites`)).pipe(
+      map((res) =>
+        res.data.map((s) => ({
+          id: (s as any).id ?? (s as any).Id,
+          name: (s as any).name ?? (s as any).Name,
+        }))
+      ),
+      catchError(() => of(MOCK_SITES).pipe(delay(300)))
+    );
   }
 
-  /**
-   * Future API Endpoint: GET /api/alarmsense/turbines?siteId={siteId}
-   */
   getTurbinesBySite(siteId: string): Observable<Turbine[]> {
-    const filtered = MOCK_TURBINES.filter((t) => t.siteId === siteId);
-    return of(filtered).pipe(delay(300));
+    return from(
+      axios.get<Turbine[]>(`${API_BASE}/turbines`, {
+        params: { siteId },
+      })
+    ).pipe(
+      map((res) =>
+        res.data.map((t) => ({
+          id: (t as any).id ?? (t as any).Id,
+          name: (t as any).name ?? (t as any).Name,
+          siteId: (t as any).siteId ?? (t as any).SiteId,
+        }))
+      ),
+      catchError(() =>
+        of(MOCK_TURBINES.filter((t) => t.siteId === siteId)).pipe(delay(300))
+      )
+    );
   }
 
-  /**
-   * Future API Endpoint: POST /api/alarmsense/rootcause
-   */
   findRootCause(filter: AlarmFilter): Observable<RootCauseResult[]> {
-    const start = filter.startDateTime ? new Date(filter.startDateTime) : null;
+    return from(
+      axios.post<ApiRootCauseResponse[]>(`${API_BASE}/rootcause`, filter)
+    ).pipe(
+      map((res) =>
+        res.data.map(
+          (r, index): RootCauseResult => ({
+            id:
+              r.id ?? r.Id ?? (r.alarmCode ?? r.AlarmCode ?? "UNKNOWN") + index,
 
-    const end = filter.endDateTime ? new Date(filter.endDateTime) : null;
+            startTime: r.startTime ?? r.StartTime ?? "",
+            endTime: r.endTime ?? r.EndTime ?? "",
+            rootCauseName: r.rootCauseName ?? r.RootCauseName ?? "",
+            alarmCode: r.alarmCode ?? r.AlarmCode ?? "",
+            class: r.class ?? r.Class ?? "",
 
-    const filtered = MOCK_RESULTS.filter((item) => {
-      const itemDate = new Date(item.startTime);
-
-      if (start && itemDate < start) return false;
-      if (end && itemDate > end) return false;
-
-      return true;
-    });
-
-    return of(filtered).pipe(delay(600));
+            priority: (r.priority ?? r.Priority) === "P1" ? "P1" : "P2",
+          })
+        )
+      ),
+      catchError(() => of(MOCK_RESULTS).pipe(delay(500)))
+    );
   }
 }
 

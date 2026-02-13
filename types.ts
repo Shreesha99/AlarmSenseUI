@@ -1,4 +1,3 @@
-
 export interface Site {
   id: string;
   name: string;
@@ -24,11 +23,10 @@ export interface RootCauseResult {
   rootCauseName: string;
   alarmCode: string;
   class: string;
-  priority: 'High' | 'Medium' | 'Low';
+  priority: "P1" | "P2";
 }
 
 export enum PriorityColor {
-  High = 'text-red-600 font-bold',
-  Medium = 'text-orange-500 font-bold',
-  Low = 'text-green-600 font-bold'
+  P1 = "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200",
+  P2 = "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200",
 }

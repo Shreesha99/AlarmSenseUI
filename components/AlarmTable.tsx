@@ -3,9 +3,11 @@ import { RootCauseResult } from "@/types";
 import PriorityBadge from "@/components/PriorityBadge";
 import AlarmPagination from "@/components/AlarmPagination";
 import AlarmDetailsOverlay from "@/components/AlarmDetailsOverlay";
-import AlarmFilterPopover from "./AlarmFilterPopover";
+import AlarmFilterPopover from "@/components/AlarmFilterPopover";
 import { Download, FileSearch, SearchX } from "lucide-react";
 import CustomButton from "@/components/CustomButton";
+import AlarmFeedbackModal from "@/components/AlarmFeedbackModal";
+import FeedbackThankYouModal from "@/components/FeedbackThankYouModal";
 
 interface Props {
   results: RootCauseResult[];
@@ -33,8 +35,7 @@ const AlarmTable: React.FC<Props> = ({
   onPageSizeChange,
 }) => {
   const [selected, setSelected] = useState<RootCauseResult | null>(null);
-  const [filteredResults, setFilteredResults] =
-    useState<RootCauseResult[]>(results);
+  const [filteredResults, setFilteredResults] = useState<RootCauseResult[]>([]);
 
   useEffect(() => {
     setFilteredResults(results);
@@ -43,6 +44,9 @@ const AlarmTable: React.FC<Props> = ({
   useEffect(() => {
     onPageChange(1);
   }, [filteredResults.length]);
+
+  const [feedbackRow, setFeedbackRow] = useState<RootCauseResult | null>(null);
+  const [showThankYou, setShowThankYou] = useState(false);
 
   const exportToCSV = () => {
     if (!results.length) return;
@@ -179,15 +183,26 @@ const AlarmTable: React.FC<Props> = ({
                           <PriorityBadge priority={row.priority} />
                         </td>
 
-                        <td className="px-4 sm:px-6 py-5 text-center">
-                          <CustomButton
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setSelected(row)}
-                            className="border border-[#00646C]/30 text-[#00646C] hover:bg-[#00646C]/5 w-full sm:w-auto"
-                          >
-                            Details
-                          </CustomButton>
+                        <td className="px-4 sm:px-6 py-5">
+                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2">
+                            <CustomButton
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setSelected(row)}
+                              className="border border-[#00646C]/30 text-[#00646C] hover:bg-[#00646C]/5 w-full sm:w-auto"
+                            >
+                              Details
+                            </CustomButton>
+
+                            <CustomButton
+                              size="sm"
+                              variant="primary"
+                              onClick={() => setFeedbackRow(row)}
+                              className="w-full sm:w-auto"
+                            >
+                              Give Feedback
+                            </CustomButton>
+                          </div>
                         </td>
                       </tr>
                     ))
@@ -237,6 +252,21 @@ const AlarmTable: React.FC<Props> = ({
           </div>
         )}
       </div>
+
+      <AlarmFeedbackModal
+        data={feedbackRow}
+        allAlarms={results}
+        onClose={() => setFeedbackRow(null)}
+        onSubmitted={() => {
+          setFeedbackRow(null);
+          setShowThankYou(true);
+        }}
+      />
+
+      <FeedbackThankYouModal
+        open={showThankYou}
+        onClose={() => setShowThankYou(false)}
+      />
 
       <AlarmDetailsOverlay data={selected} onClose={() => setSelected(null)} />
     </>

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { ChevronDown } from "lucide-react";
 
 interface Option {
@@ -27,13 +27,15 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightIndex, setHighlightIndex] = useState<number>(-1);
+  const [openUpwards, setOpenUpwards] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
   const selectedOption = options.find((opt) => opt.value === value);
 
-  // Close on outside click
+  /* ---------- Close on outside click ---------- */
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -48,7 +50,18 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Keyboard support
+  /* ---------- Auto flip direction ---------- */
+  useLayoutEffect(() => {
+    if (!isOpen || !containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const estimatedDropdownHeight = 220;
+
+    setOpenUpwards(spaceBelow < estimatedDropdownHeight);
+  }, [isOpen]);
+
+  /* ---------- Keyboard support ---------- */
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (disabled) return;
 
@@ -93,7 +106,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
         ${
           disabled
             ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-            : "bg-white hover:border-[#00646C] focus:border-[#00646C] cursor-pointer"
+            : "bg-white hover:border-[#00646C] cursor-pointer"
         }
         ${error ? "border-red-400 ring-1 ring-red-100" : "border-gray-300"}
         `}
@@ -116,9 +129,14 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
         </div>
       )}
 
-      {/* Dropdown List */}
+      {/* Dropdown */}
       {isOpen && !disabled && (
-        <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+        <div
+          ref={dropdownRef}
+          className={`absolute z-50 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto
+            ${openUpwards ? "bottom-full mb-1" : "top-full mt-1"}
+          `}
+        >
           {options.length === 0 ? (
             <div className="px-3 py-2 text-sm text-gray-400">No options</div>
           ) : (

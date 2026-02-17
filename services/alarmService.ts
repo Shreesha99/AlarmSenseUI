@@ -3,7 +3,7 @@ import { delay, map, catchError } from "rxjs/operators";
 import { Site, Turbine, RootCauseResult, AlarmFilter } from "../types";
 import axios from "axios";
 
-const API_BASE = "https://localhost:7155/api/alarmsense";
+const API_BASE = "";
 
 /* ---------------- MOCK DATA ---------------- */
 
